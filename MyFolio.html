@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyFolio — Private Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+/* ============================================================
+   MyFolio — styles.css
+   Dark luxury editorial theme with gold accents
+   ============================================================ */
+
+/* ===== RESET ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --bg:           #080808;
+  --bg-surface:   #0f0f0f;
+  --bg-card:      #141414;
+  --bg-card-h:    #191919;
+  --border:       #222222;
+  --border-l:     #2c2c2c;
+
+  --gold:         #C9A84C;
+  --gold-dim:     #8a6e2a;
+  --gold-glow:    rgba(201,168,76,0.12);
+  --gold-text:    #E2C06A;
+
+  --text:         #E2DAD0;
+  --text-s:       #968E84;
+  --text-m:       #5A5248;
+
+  --red:          #C94C4C;
+  --green:        #4DB87A;
+  --blue:         #4D94C9;
+
+  --font-d:       'Playfair Display', serif;
+  --font-b:       'DM Sans', sans-serif;
+
+  --r:            8px;
+  --r-lg:         14px;
+  --sidebar:      248px;
+  --topbar:       56px;
+  --ease:         0.18s ease;
+}
+
+/* ===== BASE ===== */
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-b);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-l); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-m); }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--topbar);
+  background: rgba(8,8,8,0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  z-index: 100;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+
+.logo {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+.tagline {
+  font-size: 0.68rem;
+  color: var(--text-m);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border-left: 1px solid var(--border-l);
+  padding-left: 16px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
+.btn-action {
+  font-family: var(--font-b);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-s);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 7px 13px;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: all var(--ease);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-action:hover { color: var(--text); border-color: var(--border-l); background: var(--bg-card-h); }
+.btn-action.btn-gold { color: var(--gold); border-color: var(--gold-dim); }
+.btn-action.btn-gold:hover { background: var(--gold-glow); }
+
+/* ===== LAYOUT ===== */
+.layout { display: flex; padding-top: var(--topbar); min-height: 100vh; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar);
+  flex-shrink: 0;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: var(--topbar);
+  height: calc(100vh - var(--topbar));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-summary {
+  padding: 28px 20px 22px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--ease);
+}
+.profile-summary:hover { background: rgba(255,255,255,0.02); }
+
+.avatar-wrap {
+  width: 70px; height: 70px;
+  margin: 0 auto 12px;
+  position: relative;
+}
+
+.sidebar-avatar {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold-dim);
+}
+
+.avatar-ph {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-d);
+  font-size: 1.8rem;
+  color: var(--text-m);
+}
+
+.sb-name {
+  font-family: var(--font-d);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.sb-title {
+  font-size: 0.72rem;
+  color: var(--text-m);
+  line-height: 1.5;
+}
+
+/* ===== NAV ===== */
+.sidebar-nav {
+  padding: 16px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 13px;
+  border-radius: var(--r);
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-s);
+  cursor: pointer;
+  transition: all var(--ease);
+  text-decoration: none;
+  user-select: none;
+  letter-spacing: 0.01em;
+}
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-item.active { color: var(--gold-text); background: var(--gold-glow); }
+
+.nav-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+.nav-item.active .nav-dot { opacity: 1; }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.storage-info { font-size: 0.72rem; color: var(--text-s); text-align: center; margin-bottom: 4px; }
+.storage-note { font-size: 0.66rem; color: var(--text-m); text-align: center; }
+
+/* ===== MAIN CONTENT ===== */
+.content {
+  flex: 1;
+  padding: 42px 52px;
+  max-width: 960px;
+  min-width: 0;
+}
+
+/* ===== SECTIONS ===== */
+.section { display: none; animation: sectionIn 0.22s ease; }
+.section.active { display: block; }
+
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-family: var(--font-d);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.btn-add {
+  font-family: var(--font-b);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gold);
+  background: var(--gold-glow);
+  border: 1px solid var(--gold-dim);
+  padding: 8px 16px;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: all var(--ease);
+  letter-spacing: 0.02em;
+}
+.btn-add:hover { background: rgba(201,168,76,0.22); }
+
+/* ===== PROFILE CARD ===== */
+.profile-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.profile-banner {
+  height: 88px;
+  background: linear-gradient(135deg, #160f00 0%, #241800 40%, #131313 100%);
+  position: relative;
+  overflow: hidden;
+}
+.profile-banner::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -55deg, transparent, transparent 18px,
+    rgba(201,168,76,0.04) 18px, rgba(201,168,76,0.04) 19px
+  );
+}
+
+.profile-main {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  padding: 0 28px;
+  margin-top: -38px;
+  margin-bottom: 14px;
+}
+
+.profile-photo-wrap { flex-shrink: 0; position: relative; }
+
+.profile-photo-wrap img,
+.p-photo-ph {
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  border: 3px solid var(--bg-card);
+  object-fit: cover;
+}
+
+.p-photo-ph {
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-d);
+  font-size: 2rem;
+  color: var(--text-m);
+}
+
+.profile-text { padding-bottom: 4px; }
+
+.profile-text h1 {
+  font-family: var(--font-d);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.p-headline { font-size: 0.88rem; color: var(--text-s); margin: 4px 0 2px; }
+.p-location { font-size: 0.75rem; color: var(--text-m); }
+
+.profile-bio-wrap { padding: 0 28px 14px; }
+.p-bio { font-size: 0.88rem; color: var(--text-s); line-height: 1.75; }
+
+.p-contacts {
+  padding: 14px 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.contact-chip {
+  font-size: 0.76rem;
+  color: var(--text-m);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.contact-chip a { color: var(--gold-text); text-decoration: none; }
+.contact-chip a:hover { text-decoration: underline; }
+
+/* ===== STATS ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--ease);
+}
+.stat-card:hover { border-color: var(--gold-dim); background: var(--gold-glow); transform: translateY(-2px); }
+
+.stat-num {
+  font-family: var(--font-d);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 7px;
+}
+
+.stat-lbl {
+  font-size: 0.72rem;
+  color: var(--text-m);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ===== CARDS ===== */
+.cards-list { display: flex; flex-direction: column; gap: 16px; }
+.cards-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cards-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  transition: border-color var(--ease), transform var(--ease);
+  position: relative;
+}
+.card:hover { border-color: var(--border-l); transform: translateY(-1px); }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.card-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--r);
+  background: var(--gold-glow);
+  border: 1px solid var(--gold-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.card-actions {
+  display: flex; gap: 6px;
+  opacity: 0;
+  transition: opacity var(--ease);
+}
+.card:hover .card-actions { opacity: 1; }
+
+.btn-ic {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.72rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-m);
+  transition: all var(--ease);
+}
+.btn-ic.edit:hover  { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-glow); }
+.btn-ic.del:hover   { color: var(--red); border-color: var(--red); background: rgba(201,76,76,0.1); }
+
+.card-badge {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: var(--gold-glow);
+  color: var(--gold-text);
+  border: 1px solid var(--gold-dim);
+}
+.card-badge.b-blue  { background: rgba(77,148,201,0.1); color: #70B0DD; border-color: #264060; }
+.card-badge.b-green { background: rgba(77,184,122,0.1); color: #5DD494; border-color: #1e5235; }
+.card-badge.b-gray  { background: rgba(150,150,150,0.08); color: var(--text-s); border-color: var(--border); }
+
+.card-title {
+  font-family: var(--font-d);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.card-sub {
+  font-size: 0.82rem;
+  color: var(--gold-text);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.card-meta {
+  font-size: 0.74rem;
+  color: var(--text-m);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--text-s);
+  line-height: 1.65;
+}
+
+.card-link {
+  font-size: 0.76rem;
+  color: var(--gold-text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+.card-link:hover { text-decoration: underline; }
+
+/* Certificate image */
+.cert-img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  margin-top: 8px;
+}
+.cert-placeholder {
+  width: 100%; height: 100px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  margin-top: 8px;
+  color: var(--text-m);
+}
+
+/* Tech chips */
+.tech-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tech-chip {
+  font-size: 0.7rem;
+  padding: 3px 9px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-s);
+}
+
+/* ===== SKILLS ===== */
+.skill-cat { margin-bottom: 28px; }
+.skill-cat-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold-text);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.skill-cat-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+}
+
+.skill-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 7px 14px;
+  font-size: 0.81rem;
+  color: var(--text);
+  transition: all var(--ease);
+}
+.skill-chip:hover { border-color: var(--gold-dim); background: var(--gold-glow); }
+
+.skill-lvl {
+  font-size: 0.65rem;
+  color: var(--text-m);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--bg-surface);
+}
+
+.skill-btns {
+  display: flex; gap: 3px;
+  opacity: 0;
+  transition: opacity var(--ease);
+}
+.skill-chip:hover .skill-btns { opacity: 1; }
+
+.skill-btn {
+  background: none; border: none;
+  cursor: pointer;
+  font-size: 0.68rem;
+  color: var(--text-m);
+  padding: 0 2px;
+  line-height: 1;
+  transition: color var(--ease);
+}
+.skill-btn:hover { color: var(--red); }
+.skill-btn.edit:hover { color: var(--gold); }
+
+/* ===== EMPTY STATE ===== */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-m);
+  font-size: 0.85rem;
+  font-style: italic;
+  border: 1px dashed var(--border);
+  border-radius: var(--r-lg);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r-lg);
+  width: 100%;
+  max-width: 580px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  animation: mIn 0.22s ease;
+}
+
+@keyframes mIn {
+  from { opacity: 0; transform: scale(0.97) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+  font-family: var(--font-d);
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal-close {
+  background: none; border: none;
+  color: var(--text-m); cursor: pointer;
+  font-size: 0.95rem;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--ease);
+}
+.modal-close:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-cancel {
+  font-family: var(--font-b);
+  padding: 9px 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-s);
+  border-radius: var(--r);
+  cursor: pointer;
+  font-size: 0.84rem;
+  transition: all var(--ease);
+}
+.btn-cancel:hover { background: var(--bg-card); color: var(--text); }
+
+.btn-save {
+  font-family: var(--font-b);
+  padding: 9px 24px;
+  background: var(--gold);
+  border: none;
+  color: #0a0a0a;
+  border-radius: var(--r);
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 600;
+  transition: background var(--ease);
+}
+.btn-save:hover { background: #d4b155; }
+
+/* ===== FORM ===== */
+.form-group { margin-bottom: 18px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-s);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  padding: 10px 13px;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 0.86rem;
+  outline: none;
+  transition: border-color var(--ease);
+  caret-color: var(--gold);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--gold-dim); }
+
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--text-m); }
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235A5248' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.form-group select option { background: var(--bg-card); color: var(--text); }
+
+.form-group textarea { resize: vertical; min-height: 88px; line-height: 1.65; }
+
+.form-group input[type="file"] {
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  color: var(--text-s);
+  cursor: pointer;
+}
+
+.form-hint { font-size: 0.7rem; color: var(--text-m); margin-top: 5px; line-height: 1.5; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 22px; right: 22px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  padding: 11px 20px;
+  font-size: 0.84rem;
+  color: var(--text);
+  transform: translateY(70px);
+  opacity: 0;
+  transition: all 0.28s ease;
+  z-index: 400;
+  max-width: 300px;
+  pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.ok  { border-color: #1e5235; color: var(--green); }
+.toast.err { border-color: #5a2222; color: var(--red); }
+
+/* ===== PRINT ===== */
+@media print {
+  .topbar, .sidebar, .btn-add, .card-actions, .btn-action,
+  .skill-btns { display: none !important; }
+  .layout { padding-top: 0; }
+  .content { padding: 16px; max-width: 100%; }
+  .section { display: block !important; margin-bottom: 28px; page-break-inside: avoid; }
+  .cards-grid2, .cards-grid3 { grid-template-columns: repeat(2, 1fr); }
+  body { background: #fff; color: #111; }
+  .card { background: #fff; border: 1px solid #ccc; break-inside: avoid; }
+  .card-title { color: #111; }
+  .section-title { color: #111; }
+  .p-bio, .card-desc { color: #333; }
+  .profile-card { background: #fff; border: 1px solid #ccc; }
+  .stats-grid { display: none; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .content { padding: 28px 24px; }
+  .cards-grid2, .cards-grid3 { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 680px) {
+  :root { --sidebar: 0px; }
+  .sidebar { display: none; }
+  .content { padding: 20px 16px; }
+  .form-row { grid-template-columns: 1fr; }
+  .topbar { padding: 0 14px; }
+  .tagline { display: none; }
+}
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== TOP BAR ===== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="logo">✦ MyFolio</span>
+      <span class="tagline">Private · Secure · Yours</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-action" onclick="exportData()" title="Download your data as a JSON file">⬇ Export JSON</button>
+      <label class="btn-action" for="import-file" title="Restore from a previously exported JSON file" style="cursor:pointer">
+        ⬆ Import JSON
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+      </label>
+      <button class="btn-action btn-gold" onclick="window.print()" title="Print or save as PDF">🖨 Print / PDF</button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <div class="profile-summary" onclick="goToSection('overview')" style="cursor:pointer">
+        <div class="avatar-wrap">
+          <img id="sidebar-avatar" src="" alt="Profile" class="sidebar-avatar" style="display:none">
+          <div id="avatar-ph" class="avatar-ph">?</div>
+        </div>
+        <div id="sb-name" class="sb-name">Your Name</div>
+        <div id="sb-title" class="sb-title">Your Title</div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-section="overview" onclick="goToSection('overview')">
+          <span class="nav-dot"></span> Overview
+        </a>
+        <a class="nav-item" data-section="experience" onclick="goToSection('experience')">
+          <span class="nav-dot"></span> Experience
+        </a>
+        <a class="nav-item" data-section="education" onclick="goToSection('education')">
+          <span class="nav-dot"></span> Education
+        </a>
+        <a class="nav-item" data-section="achievements" onclick="goToSection('achievements')">
+          <span class="nav-dot"></span> Achievements
+        </a>
+        <a class="nav-item" data-section="certifications" onclick="goToSection('certifications')">
+          <span class="nav-dot"></span> Certifications
+        </a>
+        <a class="nav-item" data-section="projects" onclick="goToSection('projects')">
+          <span class="nav-dot"></span> Projects
+        </a>
+        <a class="nav-item" data-section="skills" onclick="goToSection('skills')">
+          <span class="nav-dot"></span> Skills
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div id="storage-info" class="storage-info">Stored locally in browser</div>
+        <div class="storage-note">Your data never leaves this device</div>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <section id="section-overview" class="section active">
+        <div class="section-header">
+          <h2 class="section-title">Profile</h2>
+          <button class="btn-add" onclick="openProfileModal()">✎ Edit Profile</button>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-banner"></div>
+          <div class="profile-main">
+            <div class="profile-photo-wrap">
+              <img id="p-photo" src="" alt="" style="display:none">
+              <div id="p-photo-ph" class="p-photo-ph">?</div>
+            </div>
+            <div class="profile-text">
+              <h1 id="p-name">Your Name</h1>
+              <p id="p-title" class="p-headline">Your Title / Role</p>
+              <p id="p-location" class="p-location"></p>
+            </div>
+          </div>
+          <div class="profile-bio-wrap">
+            <p id="p-bio" class="p-bio">Click "Edit Profile" to get started...</p>
+          </div>
+          <div id="p-contacts" class="p-contacts"></div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card" onclick="goToSection('experience')">
+            <div id="stat-exp" class="stat-num">0</div>
+            <div class="stat-lbl">Experience</div>
+          </div>
+          <div class="stat-card" onclick="goToSection('education')">
+            <div id="stat-edu" class="stat-num">0</div>
+            <div class="stat-lbl">Education</div>
+          </div>
+          <div class="stat-card" onclick="goToSection('achievements')">
+            <div id="stat-ach" class="stat-num">0</div>
+            <div class="stat-lbl">Achievements</div>
+          </div>
+          <div class="stat-card" onclick="goToSection('certifications')">
+            <div id="stat-cert" class="stat-num">0</div>
+            <div class="stat-lbl">Certifications</div>
+          </div>
+          <div class="stat-card" onclick="goToSection('projects')">
+            <div id="stat-proj" class="stat-num">0</div>
+            <div class="stat-lbl">Projects</div>
+          </div>
+          <div class="stat-card" onclick="goToSection('skills')">
+            <div id="stat-skill" class="stat-num">0</div>
+            <div class="stat-lbl">Skills</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section id="section-experience" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Experience</h2>
+          <button class="btn-add" onclick="openAddModal('experience')">+ Add</button>
+        </div>
+        <div class="cards-list" id="experience-list"></div>
+      </section>
+
+      <!-- EDUCATION -->
+      <section id="section-education" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Education</h2>
+          <button class="btn-add" onclick="openAddModal('education')">+ Add</button>
+        </div>
+        <div class="cards-list" id="education-list"></div>
+      </section>
+
+      <!-- ACHIEVEMENTS -->
+      <section id="section-achievements" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Achievements</h2>
+          <button class="btn-add" onclick="openAddModal('achievement')">+ Add</button>
+        </div>
+        <div class="cards-grid2" id="achievements-list"></div>
+      </section>
+
+      <!-- CERTIFICATIONS -->
+      <section id="section-certifications" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Certifications</h2>
+          <button class="btn-add" onclick="openAddModal('certification')">+ Add</button>
+        </div>
+        <div class="cards-grid3" id="certifications-list"></div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="section-projects" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Projects</h2>
+          <button class="btn-add" onclick="openAddModal('project')">+ Add</button>
+        </div>
+        <div class="cards-grid2" id="projects-list"></div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="section-skills" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Skills</h2>
+          <button class="btn-add" onclick="openAddModal('skill')">+ Add</button>
+        </div>
+        <div id="skills-container"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal-box" id="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title">Add Entry</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-save" onclick="saveModal()">Save Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast"></div>
+
+</div>
+<script>
+/* ============================================================
+   MyFolio — app.js
+   All data stored in localStorage.
+   Export to JSON for backup. Import to restore.
+   ============================================================ */
+
+// ===== DATA DEFAULTS & KEYS =====
+const STORE_KEY = 'myfolio_v1';
+
+const BLANK = {
+  profile: {
+    name: '', title: '', email: '', phone: '',
+    location: '', bio: '', linkedin: '',
+    github: '', website: '', photo: ''
+  },
+  experiences:    [],
+  education:      [],
+  achievements:   [],
+  certifications: [],
+  projects:       [],
+  skills:         []
+};
+
+let D = {}; // live data object
+let modal = { type: null, id: null };
+
+// ===== LOAD / SAVE =====
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    D = raw ? { ...JSON.parse(JSON.stringify(BLANK)), ...JSON.parse(raw) } : JSON.parse(JSON.stringify(BLANK));
+  } catch (e) {
+    D = JSON.parse(JSON.stringify(BLANK));
+  }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(D));
+    updateStorageBar();
+  } catch (e) {
+    toast('Storage full! Export & clear some certificate images.', 'err');
+  }
+}
+
+function updateStorageBar() {
+  try {
+    const bytes = new Blob([JSON.stringify(D)]).size;
+    const kb    = (bytes / 1024).toFixed(1);
+    const el    = document.getElementById('storage-info');
+    if (el) el.textContent = `localStorage · ${kb} KB used`;
+  } catch (_) {}
+}
+
+// ===== NAVIGATION =====
+
+function goToSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById('section-' + name);
+  const nav = document.querySelector('[data-section="' + name + '"]');
+  if (sec) sec.classList.add('active');
+  if (nav) nav.classList.add('active');
+}
+
+// ===== RENDER ALL =====
+
+function renderAll() {
+  renderProfile();
+  renderExperience();
+  renderEducation();
+  renderAchievements();
+  renderCertifications();
+  renderProjects();
+  renderSkills();
+  updateStats();
+  updateStorageBar();
+}
+
+function updateStats() {
+  setText('stat-exp',  D.experiences.length);
+  setText('stat-edu',  D.education.length);
+  setText('stat-ach',  D.achievements.length);
+  setText('stat-cert', D.certifications.length);
+  setText('stat-proj', D.projects.length);
+  setText('stat-skill',D.skills.length);
+}
+
+// ===== RENDER PROFILE =====
+
+function renderProfile() {
+  const p = D.profile;
+
+  // Sidebar
+  setText('sb-name',  p.name  || 'Your Name');
+  setText('sb-title', p.title || 'Your Title');
+
+  // Photo
+  setPhoto('sidebar-avatar', 'avatar-ph', p);
+  setPhoto('p-photo',        'p-photo-ph', p);
+
+  // Main details
+  setText('p-name',     p.name     || 'Your Name');
+  setText('p-title',    p.title    || 'Your Title / Role');
+  setText('p-location', p.location ? '📍 ' + p.location : '');
+  setText('p-bio',      p.bio      || 'Click "Edit Profile" to get started...');
+
+  // Contacts
+  const c = document.getElementById('p-contacts');
+  if (!c) return;
+  const chips = [];
+  if (p.email)    chips.push(`<span class="contact-chip">✉ ${esc(p.email)}</span>`);
+  if (p.phone)    chips.push(`<span class="contact-chip">📞 ${esc(p.phone)}</span>`);
+  if (p.linkedin) chips.push(`<span class="contact-chip">🔗 <a href="${esc(p.linkedin)}" target="_blank" rel="noopener">LinkedIn</a></span>`);
+  if (p.github)   chips.push(`<span class="contact-chip">⌨ <a href="${esc(p.github)}" target="_blank" rel="noopener">GitHub</a></span>`);
+  if (p.website)  chips.push(`<span class="contact-chip">🌐 <a href="${esc(p.website)}" target="_blank" rel="noopener">Website</a></span>`);
+  c.innerHTML = chips.join('');
+  c.style.display = chips.length ? 'flex' : 'none';
+}
+
+function setPhoto(imgId, phId, p) {
+  const img = document.getElementById(imgId);
+  const ph  = document.getElementById(phId);
+  if (!img || !ph) return;
+  if (p.photo) {
+    img.src = p.photo;
+    img.style.display = 'block';
+    ph.style.display  = 'none';
+  } else {
+    img.style.display = 'none';
+    ph.style.display  = 'flex';
+    ph.textContent    = p.name ? p.name[0].toUpperCase() : '?';
+  }
+}
+
+// ===== RENDER EXPERIENCE =====
+
+function renderExperience() {
+  const list = document.getElementById('experience-list');
+  if (!list) return;
+  if (!D.experiences.length) { list.innerHTML = empty('No experience entries yet.'); return; }
+
+  list.innerHTML = D.experiences.map(e => `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">💼</div>
+        <div class="card-actions">
+          <button class="btn-ic edit" onclick="openEditModal('experience','${e.id}')">✎</button>
+          <button class="btn-ic del"  onclick="deleteEntry('experiences','${e.id}')">✕</button>
+        </div>
+      </div>
+      <span class="card-badge ${e.type === 'Internship' ? 'b-blue' : e.type === 'Freelance' ? 'b-green' : 'b-gray'}">${esc(e.type || 'Experience')}</span>
+      <div class="card-title">${esc(e.role || 'Role')}</div>
+      <div class="card-sub">${esc(e.company || '')}</div>
+      <div class="card-meta">
+        ${e.startDate || e.endDate ? `<span>📅 ${fmtDate(e.startDate)} — ${e.endDate ? fmtDate(e.endDate) : 'Present'}</span>` : ''}
+        ${e.location  ? `<span>📍 ${esc(e.location)}</span>` : ''}
+      </div>
+      ${e.description ? `<div class="card-desc">${esc(e.description)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ===== RENDER EDUCATION =====
+
+function renderEducation() {
+  const list = document.getElementById('education-list');
+  if (!list) return;
+  if (!D.education.length) { list.innerHTML = empty('No education entries yet.'); return; }
+
+  list.innerHTML = D.education.map(e => `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">🎓</div>
+        <div class="card-actions">
+          <button class="btn-ic edit" onclick="openEditModal('education','${e.id}')">✎</button>
+          <button class="btn-ic del"  onclick="deleteEntry('education','${e.id}')">✕</button>
+        </div>
+      </div>
+      <div class="card-title">${esc(e.degree || 'Degree')}${e.field ? ' in ' + esc(e.field) : ''}</div>
+      <div class="card-sub">${esc(e.institution || '')}</div>
+      <div class="card-meta">
+        ${e.startYear || e.endYear ? `<span>📅 ${e.startYear || ''} — ${e.endYear || 'Present'}</span>` : ''}
+        ${e.grade ? `<span>⭐ ${esc(e.grade)}</span>` : ''}
+      </div>
+      ${e.description ? `<div class="card-desc">${esc(e.description)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ===== RENDER ACHIEVEMENTS =====
+
+function renderAchievements() {
+  const list = document.getElementById('achievements-list');
+  if (!list) return;
+  if (!D.achievements.length) { list.innerHTML = empty('No achievements yet.'); return; }
+
+  list.innerHTML = D.achievements.map(a => `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">🏆</div>
+        <div class="card-actions">
+          <button class="btn-ic edit" onclick="openEditModal('achievement','${a.id}')">✎</button>
+          <button class="btn-ic del"  onclick="deleteEntry('achievements','${a.id}')">✕</button>
+        </div>
+      </div>
+      ${a.category ? `<span class="card-badge">${esc(a.category)}</span>` : ''}
+      <div class="card-title">${esc(a.title || 'Achievement')}</div>
+      ${a.issuer ? `<div class="card-sub">${esc(a.issuer)}</div>` : ''}
+      <div class="card-meta">
+        ${a.date ? `<span>📅 ${fmtDate(a.date)}</span>` : ''}
+      </div>
+      ${a.description ? `<div class="card-desc">${esc(a.description)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ===== RENDER CERTIFICATIONS =====
+
+function renderCertifications() {
+  const list = document.getElementById('certifications-list');
+  if (!list) return;
+  if (!D.certifications.length) { list.innerHTML = empty('No certifications yet.'); return; }
+
+  list.innerHTML = D.certifications.map(c => `
+    <div class="card">
+      <div class="card-top">
+        <div style="flex:1"></div>
+        <div class="card-actions" style="opacity:1">
+          <button class="btn-ic edit" onclick="openEditModal('certification','${c.id}')">✎</button>
+          <button class="btn-ic del"  onclick="deleteEntry('certifications','${c.id}')">✕</button>
+        </div>
+      </div>
+      ${c.image
+        ? `<img class="cert-img" src="${c.image}" alt="${esc(c.name)}">`
+        : `<div class="cert-placeholder">📜</div>`
+      }
+      <div class="card-title" style="margin-top:12px">${esc(c.name || 'Certificate')}</div>
+      ${c.issuer ? `<div class="card-sub">${esc(c.issuer)}</div>` : ''}
+      <div class="card-meta">
+        ${c.date   ? `<span>📅 ${fmtDate(c.date)}</span>` : ''}
+        ${c.expiry ? `<span>⏱ Expires ${fmtDate(c.expiry)}</span>` : ''}
+        ${c.certId ? `<span>🆔 ${esc(c.certId)}</span>` : ''}
+      </div>
+      ${c.url ? `<a class="card-link" href="${esc(c.url)}" target="_blank" rel="noopener">🔗 View Certificate</a>` : ''}
+    </div>
+  `).join('');
+}
+
+// ===== RENDER PROJECTS =====
+
+function renderProjects() {
+  const list = document.getElementById('projects-list');
+  if (!list) return;
+  if (!D.projects.length) { list.innerHTML = empty('No projects yet.'); return; }
+
+  list.innerHTML = D.projects.map(p => `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">🚀</div>
+        <div class="card-actions">
+          <button class="btn-ic edit" onclick="openEditModal('project','${p.id}')">✎</button>
+          <button class="btn-ic del"  onclick="deleteEntry('projects','${p.id}')">✕</button>
+        </div>
+      </div>
+      ${p.status ? `<span class="card-badge ${p.status === 'Completed' ? 'b-green' : p.status === 'In Progress' ? 'b-blue' : 'b-gray'}">${esc(p.status)}</span>` : ''}
+      <div class="card-title">${esc(p.name || 'Project')}</div>
+      <div class="card-meta">
+        ${p.startDate || p.endDate ? `<span>📅 ${fmtDate(p.startDate)} ${p.endDate ? '— ' + fmtDate(p.endDate) : ''}</span>` : ''}
+      </div>
+      ${p.description ? `<div class="card-desc">${esc(p.description)}</div>` : ''}
+      ${p.techStack ? `<div class="tech-chips">${p.techStack.split(',').map(t => `<span class="tech-chip">${esc(t.trim())}</span>`).join('')}</div>` : ''}
+      <div style="display:flex;gap:14px;margin-top:10px">
+        ${p.githubUrl ? `<a class="card-link" href="${esc(p.githubUrl)}" target="_blank" rel="noopener">⌨ GitHub</a>` : ''}
+        ${p.liveUrl   ? `<a class="card-link" href="${esc(p.liveUrl)}"   target="_blank" rel="noopener">🌐 Live</a>`   : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== RENDER SKILLS =====
+
+function renderSkills() {
+  const con = document.getElementById('skills-container');
+  if (!con) return;
+  if (!D.skills.length) { con.innerHTML = empty('No skills yet.'); return; }
+
+  const groups = {};
+  D.skills.forEach(s => {
+    const cat = s.category || 'General';
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push(s);
+  });
+
+  con.innerHTML = Object.entries(groups).map(([cat, skills]) => `
+    <div class="skill-cat">
+      <div class="skill-cat-title">${esc(cat)}</div>
+      <div class="skill-chips">
+        ${skills.map(s => `
+          <div class="skill-chip">
+            <span>${esc(s.name)}</span>
+            ${s.proficiency ? `<span class="skill-lvl">${esc(s.proficiency)}</span>` : ''}
+            <div class="skill-btns">
+              <button class="skill-btn edit" onclick="openEditModal('skill','${s.id}')" title="Edit">✎</button>
+              <button class="skill-btn"      onclick="deleteEntry('skills','${s.id}')"  title="Delete">✕</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== MODAL FORMS (HTML templates) =====
+
+function profileForm() {
+  const p = D.profile;
+  return `
+    <div class="form-row">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="f-name" placeholder="e.g. Aryan Sharma" value="${val(p.name)}">
+      </div>
+      <div class="form-group">
+        <label>Title / Role</label>
+        <input type="text" id="f-title" placeholder="e.g. CS Student | Developer" value="${val(p.title)}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="f-email" placeholder="you@email.com" value="${val(p.email)}">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" id="f-phone" placeholder="+91 98765 43210" value="${val(p.phone)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Location</label>
+      <input type="text" id="f-location" placeholder="City, State, Country" value="${val(p.location)}">
+    </div>
+    <div class="form-group">
+      <label>Bio / About Me</label>
+      <textarea id="f-bio" placeholder="Tell yourself about yourself...">${val(p.bio)}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>LinkedIn URL</label>
+        <input type="url" id="f-linkedin" placeholder="https://linkedin.com/in/..." value="${val(p.linkedin)}">
+      </div>
+      <div class="form-group">
+        <label>GitHub URL</label>
+        <input type="url" id="f-github" placeholder="https://github.com/..." value="${val(p.github)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Personal Website</label>
+      <input type="url" id="f-website" placeholder="https://yourwebsite.com" value="${val(p.website)}">
+    </div>
+    <div class="form-group">
+      <label>Profile Photo — Upload</label>
+      <input type="file" id="f-photo-file" accept="image/*">
+      <p class="form-hint">Saved locally as base64 — or paste a URL below instead</p>
+    </div>
+    <div class="form-group">
+      <label>Profile Photo — URL (optional)</label>
+      <input type="url" id="f-photo-url" placeholder="https://example.com/photo.jpg" value="${p.photo && !p.photo.startsWith('data:') ? val(p.photo) : ''}">
+    </div>
+  `;
+}
+
+function experienceForm(d = {}) {
+  return `
+    <div class="form-row">
+      <div class="form-group">
+        <label>Company / Organisation</label>
+        <input type="text" id="f-company" placeholder="Company Name" value="${val(d.company)}">
+      </div>
+      <div class="form-group">
+        <label>Your Role / Position</label>
+        <input type="text" id="f-role" placeholder="Frontend Intern" value="${val(d.role)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <select id="f-type">
+        ${['Internship','Full-time','Part-time','Freelance','Volunteer','Research'].map(t =>
+          `<option value="${t}" ${d.type === t ? 'selected' : ''}>${t}</option>`
+        ).join('')}
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="month" id="f-startDate" value="${val(d.startDate)}">
+      </div>
+      <div class="form-group">
+        <label>End Date <span style="font-weight:400;text-transform:none">(blank = current)</span></label>
+        <input type="month" id="f-endDate" value="${val(d.endDate)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Location</label>
+      <input type="text" id="f-location" placeholder="City, Country or Remote" value="${val(d.location)}">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="f-description" placeholder="Key responsibilities, what you built, what you learned...">${val(d.description)}</textarea>
+    </div>
+  `;
+}
+
+function educationForm(d = {}) {
+  return `
+    <div class="form-group">
+      <label>Institution</label>
+      <input type="text" id="f-institution" placeholder="University / College / School" value="${val(d.institution)}">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Degree / Qualification</label>
+        <input type="text" id="f-degree" placeholder="B.Tech / B.Sc / 12th / MBA" value="${val(d.degree)}">
+      </div>
+      <div class="form-group">
+        <label>Field of Study</label>
+        <input type="text" id="f-field" placeholder="Computer Science, etc." value="${val(d.field)}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Start Year</label>
+        <input type="number" id="f-startYear" placeholder="2020" min="1950" max="2035" value="${val(d.startYear)}">
+      </div>
+      <div class="form-group">
+        <label>End Year (or expected)</label>
+        <input type="number" id="f-endYear" placeholder="2024" min="1950" max="2035" value="${val(d.endYear)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Grade / CGPA / Percentage</label>
+      <input type="text" id="f-grade" placeholder="9.2 CGPA / 92%" value="${val(d.grade)}">
+    </div>
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea id="f-description" placeholder="Relevant courses, activities, honors, thesis...">${val(d.description)}</textarea>
+    </div>
+  `;
+}
+
+function achievementForm(d = {}) {
+  return `
+    <div class="form-group">
+      <label>Achievement Title</label>
+      <input type="text" id="f-title" placeholder="1st Place — National Hackathon" value="${val(d.title)}">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Issuer / Organiser</label>
+        <input type="text" id="f-issuer" placeholder="IIT Delhi, Google, etc." value="${val(d.issuer)}">
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="month" id="f-date" value="${val(d.date)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select id="f-category">
+        ${['','Academic','Hackathon','Competition','Award','Scholarship','Sports','Community','Other'].map(t =>
+          `<option value="${t}" ${d.category === t ? 'selected' : ''}>${t || '— Select —'}</option>`
+        ).join('')}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="f-description" placeholder="Details, what the award was for, who competed...">${val(d.description)}</textarea>
+    </div>
+  `;
+}
+
+function certificationForm(d = {}) {
+  return `
+    <div class="form-group">
+      <label>Certificate Name</label>
+      <input type="text" id="f-name" placeholder="AWS Certified Developer" value="${val(d.name)}">
+    </div>
+    <div class="form-group">
+      <label>Issuing Organisation</label>
+      <input type="text" id="f-issuer" placeholder="Amazon Web Services, Coursera, etc." value="${val(d.issuer)}">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Issue Date</label>
+        <input type="month" id="f-date" value="${val(d.date)}">
+      </div>
+      <div class="form-group">
+        <label>Expiry Date <span style="font-weight:400;text-transform:none">(optional)</span></label>
+        <input type="month" id="f-expiry" value="${val(d.expiry)}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Certificate ID</label>
+        <input type="text" id="f-certId" placeholder="ABC-12345XYZ" value="${val(d.certId)}">
+      </div>
+      <div class="form-group">
+        <label>Verification URL</label>
+        <input type="url" id="f-url" placeholder="https://verify.example.com/..." value="${val(d.url)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Certificate Image</label>
+      <input type="file" id="f-image-file" accept="image/*">
+      <p class="form-hint">Upload the certificate image — saved locally as base64</p>
+    </div>
+    ${d.image ? `<p class="form-hint" style="color:var(--green)">✓ Image already saved. Upload a new one to replace it.</p>` : ''}
+  `;
+}
+
+function projectForm(d = {}) {
+  return `
+    <div class="form-group">
+      <label>Project Name</label>
+      <input type="text" id="f-name" placeholder="AI Chatbot, Portfolio Website..." value="${val(d.name)}">
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select id="f-status">
+        ${['In Progress','Completed','On Hold','Idea','Archived'].map(t =>
+          `<option value="${t}" ${(d.status || 'In Progress') === t ? 'selected' : ''}>${t}</option>`
+        ).join('')}
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="month" id="f-startDate" value="${val(d.startDate)}">
+      </div>
+      <div class="form-group">
+        <label>End Date</label>
+        <input type="month" id="f-endDate" value="${val(d.endDate)}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="f-description" placeholder="What it does, the problem it solves, your role...">${val(d.description)}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Tech Stack</label>
+      <input type="text" id="f-techStack" placeholder="React, Node.js, MongoDB (comma separated)" value="${val(d.techStack)}">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>GitHub URL</label>
+        <input type="url" id="f-githubUrl" placeholder="https://github.com/..." value="${val(d.githubUrl)}">
+      </div>
+      <div class="form-group">
+        <label>Live / Demo URL</label>
+        <input type="url" id="f-liveUrl" placeholder="https://..." value="${val(d.liveUrl)}">
+      </div>
+    </div>
+  `;
+}
+
+function skillForm(d = {}) {
+  return `
+    <div class="form-group">
+      <label>Skill Name</label>
+      <input type="text" id="f-name" placeholder="Python, Figma, Public Speaking..." value="${val(d.name)}">
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <input type="text" id="f-category" list="cat-list" placeholder="Programming Languages, Design, Soft Skills..." value="${val(d.category)}">
+      <datalist id="cat-list">
+        <option value="Programming Languages">
+        <option value="Frameworks & Libraries">
+        <option value="Tools & Software">
+        <option value="Design">
+        <option value="Databases">
+        <option value="Cloud & DevOps">
+        <option value="Soft Skills">
+        <option value="Languages">
+        <option value="Mathematics">
+        <option value="Other">
+      </datalist>
+    </div>
+    <div class="form-group">
+      <label>Proficiency</label>
+      <select id="f-proficiency">
+        ${['','Beginner','Intermediate','Advanced','Expert'].map(t =>
+          `<option value="${t}" ${(d.proficiency || '') === t ? 'selected' : ''}>${t || '— Select —'}</option>`
+        ).join('')}
+      </select>
+    </div>
+  `;
+}
+
+// ===== MODAL OPEN / CLOSE =====
+
+const KEY_MAP = {
+  experience:    'experiences',
+  education:     'education',
+  achievement:   'achievements',
+  certification: 'certifications',
+  project:       'projects',
+  skill:         'skills'
+};
+
+const FORM_MAP = {
+  experience:    experienceForm,
+  education:     educationForm,
+  achievement:   achievementForm,
+  certification: certificationForm,
+  project:       projectForm,
+  skill:         skillForm
+};
+
+const TITLE_MAP = {
+  experience:    'Experience',
+  education:     'Education',
+  achievement:   'Achievement',
+  certification: 'Certification',
+  project:       'Project',
+  skill:         'Skill'
+};
+
+function openProfileModal() {
+  modal = { type: 'profile', id: null };
+  document.getElementById('modal-title').textContent = 'Edit Profile';
+  document.getElementById('modal-body').innerHTML    = profileForm();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openAddModal(type) {
+  modal = { type, id: null };
+  document.getElementById('modal-title').textContent = 'Add ' + TITLE_MAP[type];
+  document.getElementById('modal-body').innerHTML    = FORM_MAP[type]();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openEditModal(type, id) {
+  const entry = D[KEY_MAP[type]].find(e => e.id === id);
+  if (!entry) return;
+  modal = { type, id };
+  document.getElementById('modal-title').textContent = 'Edit ' + TITLE_MAP[type];
+  document.getElementById('modal-body').innerHTML    = FORM_MAP[type](entry);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  modal = { type: null, id: null };
+}
+
+// ===== SAVE MODAL =====
+
+async function saveModal() {
+  if (!modal.type) return;
+  if (modal.type === 'profile') {
+    await saveProfile();
+  } else {
+    await saveEntry(modal.type, modal.id);
+  }
+  closeModal();
+}
+
+async function saveProfile() {
+  const g = id => (document.getElementById(id)?.value || '').trim();
+  let photo = D.profile.photo || '';
+
+  const fileEl = document.getElementById('f-photo-file');
+  const urlEl  = document.getElementById('f-photo-url');
+
+  if (fileEl?.files?.[0]) {
+    photo = await toBase64(fileEl.files[0]);
+  } else if (urlEl?.value?.trim()) {
+    photo = urlEl.value.trim();
+  }
+
+  D.profile = {
+    name:     g('f-name'),
+    title:    g('f-title'),
+    email:    g('f-email'),
+    phone:    g('f-phone'),
+    location: g('f-location'),
+    bio:      g('f-bio'),
+    linkedin: g('f-linkedin'),
+    github:   g('f-github'),
+    website:  g('f-website'),
+    photo
+  };
+
+  save();
+  renderAll();
+  toast('Profile saved!', 'ok');
+}
+
+async function saveEntry(type, editId) {
+  const key = KEY_MAP[type];
+  const g   = id => (document.getElementById(id)?.value || '').trim();
+  let entry = {};
+
+  if (type === 'experience') {
+    entry = {
+      company: g('f-company'), role: g('f-role'), type: g('f-type'),
+      startDate: g('f-startDate'), endDate: g('f-endDate'),
+      location: g('f-location'), description: g('f-description')
+    };
+  } else if (type === 'education') {
+    entry = {
+      institution: g('f-institution'), degree: g('f-degree'),
+      field: g('f-field'), startYear: g('f-startYear'),
+      endYear: g('f-endYear'), grade: g('f-grade'),
+      description: g('f-description')
+    };
+  } else if (type === 'achievement') {
+    entry = {
+      title: g('f-title'), issuer: g('f-issuer'),
+      date: g('f-date'), category: g('f-category'),
+      description: g('f-description')
+    };
+  } else if (type === 'certification') {
+    // Keep existing image unless a new one is uploaded
+    let image = editId ? (D.certifications.find(c => c.id === editId)?.image || '') : '';
+    const fileEl = document.getElementById('f-image-file');
+    if (fileEl?.files?.[0]) image = await toBase64(fileEl.files[0]);
+    entry = {
+      name: g('f-name'), issuer: g('f-issuer'),
+      date: g('f-date'), expiry: g('f-expiry'),
+      certId: g('f-certId'), url: g('f-url'), image
+    };
+  } else if (type === 'project') {
+    entry = {
+      name: g('f-name'), status: g('f-status'),
+      startDate: g('f-startDate'), endDate: g('f-endDate'),
+      description: g('f-description'), techStack: g('f-techStack'),
+      githubUrl: g('f-githubUrl'), liveUrl: g('f-liveUrl')
+    };
+  } else if (type === 'skill') {
+    entry = {
+      name: g('f-name'), category: g('f-category'),
+      proficiency: g('f-proficiency')
+    };
+  }
+
+  if (editId) {
+    const idx = D[key].findIndex(e => e.id === editId);
+    if (idx !== -1) D[key][idx] = { ...D[key][idx], ...entry };
+    toast('Entry updated!', 'ok');
+  } else {
+    entry.id = uid();
+    D[key].push(entry);
+    toast('Entry added!', 'ok');
+  }
+
+  save();
+  renderAll();
+}
+
+function deleteEntry(key, id) {
+  if (!confirm('Delete this entry? This cannot be undone.')) return;
+  D[key] = D[key].filter(e => e.id !== id);
+  save();
+  renderAll();
+  toast('Deleted.', 'ok');
+}
+
+// ===== EXPORT / IMPORT =====
+
+function exportData() {
+  const json = JSON.stringify(D, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'myfolio-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Backup exported! Keep this file safe.', 'ok');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (typeof parsed !== 'object' || !('profile' in parsed)) throw new Error('Invalid format');
+      if (!confirm('This will replace ALL your current data. Continue?')) return;
+      D = { ...JSON.parse(JSON.stringify(BLANK)), ...parsed };
+      save();
+      renderAll();
+      toast('Data imported successfully!', 'ok');
+    } catch (_) {
+      toast('Import failed — invalid backup file.', 'err');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // reset input
+}
+
+// ===== UTILS =====
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload  = e => resolve(e.target.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className   = 'toast show ' + type;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.className = 'toast'; }, 3200);
+}
+
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function val(str) {
+  // Safe for HTML attribute values (inside double quotes)
+  return esc(str || '');
+}
+
+function empty(msg) {
+  return `<div class="empty">${msg}</div>`;
+}
+
+function fmtDate(str) {
+  if (!str) return '';
+  try {
+    const [y, m] = str.split('-');
+    if (!m) return y;
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return (months[parseInt(m, 10) - 1] || '') + ' ' + y;
+  } catch (_) { return str; }
+}
+
+// ===== KEYBOARD SHORTCUTS =====
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ===== INIT =====
+
+document.addEventListener('DOMContentLoaded', () => {
+  load();
+  renderAll();
+});
+</script>
+</body>
+</html>
